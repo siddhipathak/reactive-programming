@@ -1,0 +1,45 @@
+POST-CREATE-MOVIE-INFO
+-----------------------
+curl -i \
+-d '{"movieInfoId":1, "name": "Batman", "year":2005,"cast":["Chris", "Michael"],"release_date": "2005-06-15"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/moviesinfo
+
+curl -i \
+-d '{"movieInfoId":2, "name": "Barbie", "year":2023,"cast":["Margot", "Ryan"],"release_date": "2023-05-10"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/moviesinfo
+
+curl -i \
+-d '{"movieInfoId":null, "name": "Don", "year":2008,"cast":["SRK", "Priyanka"],"release_date": "2008-08-16"}' \
+-H "Content-Type: application/json" \
+-X POST http://localhost:8080/v1/moviesinfo
+
+
+GET-ALL-MOVIE-INFO
+-----------------------
+curl -i http://localhost:8080/v1/moviesinfo
+
+GET-MOVIE-INFO-BY-ID
+-----------------------
+curl -i http://localhost:8080/v1/moviesinfo/1
+
+GET-MOVIE-INFO-STREAM
+-----------------------
+curl -i http://localhost:8080/v1/moviesinfo/stream
+
+UPDATE-MOVIE-INFO
+-----------------------
+curl -i \
+-d '{"movieInfoId":1, "name": "Batman", "year":2005,"cast":["Chris", "Michael"],"release_date": "2005-06-15"}' \
+-H "Content-Type: application/json" \
+-X PUT http://localhost:8080/v1/moviesinfo/1
+
+DELETE-MOVIE-INFO
+-----------------------
+curl -i -X DELETE http://localhost:8080/v1/moviesinfo/1
+
+
+STREAM-MOVIE-INFO
+-----------------------
+curl -i http://localhost:8080/v1/moviesinfo/stream
