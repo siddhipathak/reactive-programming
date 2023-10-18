@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -20,15 +19,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureWebTestClient
-public class ReviewsIntgTest {
+ class ReviewsIntgTest {
 
     @Autowired
-    WebTestClient webTestClient;
+    private WebTestClient webTestClient;
 
     @Autowired
-    ReviewReactiveRepository reviewReactiveRepository;
+    private ReviewReactiveRepository reviewReactiveRepository;
 
-    static String MOVIES_REVIEW_URI ="/v1/reviews";
+    private static String MOVIES_REVIEW_URI ="/v1/reviews";
 
     @BeforeEach
     void setUp() {
@@ -126,5 +125,4 @@ public class ReviewsIntgTest {
                 .isNoContent();
 
     }
-
 }
