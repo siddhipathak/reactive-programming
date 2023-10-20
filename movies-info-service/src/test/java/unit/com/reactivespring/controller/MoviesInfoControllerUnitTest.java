@@ -10,7 +10,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,19 +18,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
-import static reactor.core.publisher.Mono.*;
 
 @WebFluxTest(controllers = MoviesInfoController.class)
 @AutoConfigureWebTestClient
-public class MoviesInfoControllerUnitTest {
+class MoviesInfoControllerUnitTest {
 
     @Autowired
-    WebTestClient webTestClient;
+    private WebTestClient webTestClient;
 
     @MockBean
-    MoviesInfoService moviesInfoServiceMock;
+    private MoviesInfoService moviesInfoServiceMock;
 
-    static String MOVIES_INFO_URL = "/v1/moviesinfo";
+    private static final String MOVIES_INFO_URL = "/v1/moviesinfo";
 
     @Test
     void addMovieInfo() {
@@ -50,7 +48,7 @@ public class MoviesInfoControllerUnitTest {
                 .expectBody(MovieInfo.class)
                 .consumeWith(movieInfoEntityExchangeResult -> {
                     var movieResponse = movieInfoEntityExchangeResult.getResponseBody();
-                    assertEquals(movieResponse.getMovieInfoId(),"mockId");
+                    assertEquals("mockId", movieResponse.getMovieInfoId());
                 });
     }
 
@@ -87,7 +85,7 @@ public class MoviesInfoControllerUnitTest {
 
         when(moviesInfoServiceMock.getAllMoviesInfo()).thenReturn(Flux.fromIterable(moviesInfo));
 
-        var flux = webTestClient.get()
+        webTestClient.get()
                 .uri(MOVIES_INFO_URL)
                 .exchange()
                 .expectStatus()
@@ -104,7 +102,7 @@ public class MoviesInfoControllerUnitTest {
         var id ="abc";
         when(moviesInfoServiceMock.getMoviesInfoById(id)).thenReturn(Mono.just(movieInfo));
 
-        var flux = webTestClient.get()
+         webTestClient.get()
                 .uri(MOVIES_INFO_URL+"/{id}",id)
                 .exchange()
                 .expectStatus()

@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
     @Autowired
     private ReviewReactiveRepository reviewReactiveRepository;
 
-    private static String MOVIES_REVIEW_URI ="/v1/reviews";
+    private static final String MOVIES_REVIEW_URI ="/v1/reviews";
 
     @BeforeEach
     void setUp() {
@@ -79,7 +79,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
     @Test
     void getReviewById() {
-        var reviewId= "abc";
         //when
         webTestClient.get()
                 .uri(uriBuilder -> {

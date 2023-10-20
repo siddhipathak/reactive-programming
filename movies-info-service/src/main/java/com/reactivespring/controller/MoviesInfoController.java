@@ -8,10 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import javax.validation.Valid;
-
-import static java.sql.Types.NULL;
 
 @RestController
 @RequestMapping("/v1")
@@ -38,9 +35,7 @@ public class MoviesInfoController {
     @GetMapping("/moviesinfo/{id}")
     public Mono<ResponseEntity<MovieInfo>> getMoviesInfoById(@PathVariable String id) {
         return moviesInfoService.getMoviesInfoById(id)
-                .map(movieInfo -> {
-                    return ResponseEntity.ok().body(movieInfo);
-                })
+                .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
                 .log();
     }
@@ -49,9 +44,7 @@ public class MoviesInfoController {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<ResponseEntity<MovieInfo>> updateMovieInfo(@RequestBody MovieInfo updatedMovieInfo, @PathVariable String id) {
         return moviesInfoService.updateMovieInfo(updatedMovieInfo,id)
-                .map(movieInfo -> {
-                    return ResponseEntity.ok().body(movieInfo);
-                })
+                .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
                 .log();
     }

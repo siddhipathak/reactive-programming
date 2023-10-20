@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MoviesInfoRepositoryIntgTest {
 
     @Autowired
-    MovieInfoRepository movieInfoRepository;
+    private MovieInfoRepository movieInfoRepository;
 
     @BeforeEach
     void setUp(){

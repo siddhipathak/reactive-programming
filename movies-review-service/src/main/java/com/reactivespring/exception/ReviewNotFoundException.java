@@ -2,7 +2,7 @@ package com.reactivespring.exception;
 
 public class ReviewNotFoundException extends RuntimeException{
 
-    private String message;
+    private final String message;
     private Throwable ex;
 
     public ReviewNotFoundException( String message, Throwable ex) {

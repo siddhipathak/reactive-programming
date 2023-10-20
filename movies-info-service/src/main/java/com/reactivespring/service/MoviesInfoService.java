@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 public class MoviesInfoService {
 
     @Autowired
-    MovieInfoRepository movieInfoRepository;
+    private MovieInfoRepository movieInfoRepository;
     public Mono<MovieInfo> addMovieInfo(MovieInfo movieInfo) {
 
         return movieInfoRepository.save(movieInfo);

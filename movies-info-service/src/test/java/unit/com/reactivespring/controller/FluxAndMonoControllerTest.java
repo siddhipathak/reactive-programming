@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FluxAndMonoControllerTest {
 
     @Autowired
-    WebTestClient webTestClient;
+    private WebTestClient webTestClient;
 
     @Test
     void flux() {
@@ -33,7 +33,7 @@ class FluxAndMonoControllerTest {
 
     @Test
     void helloWorldMono(){
-        var mono = webTestClient.get()
+        webTestClient.get()
                 .uri("/mono")
                 .exchange()
                 .expectStatus()

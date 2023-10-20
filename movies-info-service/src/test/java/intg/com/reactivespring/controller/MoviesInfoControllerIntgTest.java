@@ -22,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class MoviesInfoControllerIntgTest {
 
     @Autowired
-    MovieInfoRepository movieInfoRepository;
+    private MovieInfoRepository movieInfoRepository;
 
     @Autowired
-    WebTestClient webTestClient;
+    private WebTestClient webTestClient;
 
-    static String MOVIES_INFO_URL = "/v1/moviesinfo";
+    private static String MOVIES_INFO_URL = "/v1/moviesinfo";
 
     @BeforeEach
     void setUp() {
