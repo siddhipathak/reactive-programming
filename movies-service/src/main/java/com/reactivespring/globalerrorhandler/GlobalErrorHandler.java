@@ -18,9 +18,9 @@ public class GlobalErrorHandler {
         return ResponseEntity.status(exception.getStatusCode()).body(exception.getMessage());
     }
 
-    @ExceptionHandler(MoviesInfoServerException.class)
-    public ResponseEntity<String> handleRuntimeException(MoviesInfoClientException exception) {
-        log.error("Exception caught by handleRuntimeException {} ", exception.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex){
+        log.error("Exception caught in handleRuntimeException :  {} " ,ex.getMessage(),  ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 }

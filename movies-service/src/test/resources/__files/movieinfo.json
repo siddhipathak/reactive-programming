@@ -1,0 +1,10 @@
+{
+  "movieInfoId": "1",
+  "name": "Batman 1",
+  "year": 2005,
+  "cast": [
+    "Chris",
+    "Michael"
+  ],
+  "releaseDate": "2005-06-15"
+}
