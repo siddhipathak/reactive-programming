@@ -1,17 +1,22 @@
 POST-CREATE-MOVIE-INFO
 -----------------------
 curl -i \
--d '{"movieInfoId":1, "name": "Batman", "year":2005,"cast":["Chris", "Michael"],"release_date": "2005-06-15"}' \
+-d '{"movieInfoId":"1", "name": "Batman", "year":2005,"cast":["Chris", "Michael"],"releaseDate": "2005-06-15"}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8080/v1/moviesinfo
 
+curl -i -d '{"movieInfoId":"1", "name": "Batman", "year":2005,"cast":["Chris", "Michael"],"releaseDate": "2005-06-15"}'
+-H @{ "content-type" = "application/json"} -X POST http://localhost:8080/v1/moviesinfo
+
 curl -i \
--d '{"movieInfoId":2, "name": "Barbie", "year":2023,"cast":["Margot", "Ryan"],"release_date": "2023-05-10"}' \
+-d '{"movieInfoId":2, "name": "Barbie", "year":2023,"cast":["Margot", "Ryan"],"releaseDate": "2023-05-10"}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8080/v1/moviesinfo
 
+curl -i -X POST -H @{"Content-Type" = "application/json"}  -d '{"movieInfoId":2, "name": "Barbie", "year":2023, "cast":["Margot", "Ryan"],"releaseDate": "2023-05-10"}' http://localhost:8080/v1/moviesinfo
+
 curl -i \
--d '{"movieInfoId":null, "name": "Don", "year":2008,"cast":["SRK", "Priyanka"],"release_date": "2008-08-16"}' \
+-d '{"movieInfoId":null, "name": "Don", "year":2008,"cast":["SRK", "Priyanka"],"releaseDate": "2008-08-16"}' \
 -H "Content-Type: application/json" \
 -X POST http://localhost:8080/v1/moviesinfo
 
@@ -31,7 +36,7 @@ curl -i http://localhost:8080/v1/moviesinfo/stream
 UPDATE-MOVIE-INFO
 -----------------------
 curl -i \
--d '{"movieInfoId":1, "name": "Batman", "year":2005,"cast":["Chris", "Michael"],"release_date": "2005-06-15"}' \
+-d '{"movieInfoId":1, "name": "Batman", "year":2005,"cast":["Chris", "Michael"],"releaseDate": "2005-06-15"}' \
 -H "Content-Type: application/json" \
 -X PUT http://localhost:8080/v1/moviesinfo/1
 

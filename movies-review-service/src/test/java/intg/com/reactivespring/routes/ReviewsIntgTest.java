@@ -110,7 +110,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                     var updateReview = reviewEntityExchangeResult.getResponseBody();
                     assertEquals("not good", updateReview.getComment());
                 });
-
     }
 
     @Test

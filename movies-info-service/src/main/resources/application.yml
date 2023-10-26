@@ -1,6 +1,8 @@
 spring:
   profile:
     active: local
+server:
+  port: 8080
 ---
 spring:
   config:
@@ -33,7 +35,7 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: moviereviewdb
+      database: movieservicedb
 
 logging:
   level:

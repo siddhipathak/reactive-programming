@@ -2,6 +2,7 @@ package com.reactivespring.routes;
 
 
 import com.reactivespring.domain.Review;
+import com.reactivespring.exceptionhandler.GlobalErrorHandler;
 import com.reactivespring.handler.ReviewHandler;
 import com.reactivespring.repository.ReviewReactiveRepository;
 import com.reactivespring.router.ReviewRouter;
@@ -23,7 +24,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest
-@ContextConfiguration(classes = {ReviewRouter.class, ReviewHandler.class})
+@ContextConfiguration(classes = {ReviewRouter.class, ReviewHandler.class, GlobalErrorHandler.class})
 @AutoConfigureWebTestClient
 class ReviewsUnitTest {
 
@@ -57,6 +58,24 @@ class ReviewsUnitTest {
     }
 
     @Test
+    void addReview_validation() {
+        //given
+        var review = new Review(null, null, "Awesome Movie", -9.0);
+
+        when(reviewReactiveRepository.save(isA(Review.class))).thenReturn(Mono.just(new Review("abc", 1L, "Awesome Movie", 9.0)));
+        //when
+        webTestClient
+                .post()
+                .uri(MOVIES_REVIEW_URI)
+                .bodyValue(review)
+                .exchange()
+                .expectStatus()
+                .isBadRequest()
+                .expectBody(String.class)
+                .isEqualTo("Review.movieInfoId must not be null ,ratings cannot be negative");
+    }
+
+    @Test
     void updateReview() {
         //given
         var updateReview = new Review(null, 1L, "Not a Awesome Movie", 9.0);
@@ -78,6 +97,7 @@ class ReviewsUnitTest {
                     assertEquals("Not a Awesome Movie", savedReview.getComment());
                 });
     }
+
 
     @Test
     void getAllReview() {
