@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -107,6 +108,41 @@ class MoviesInfoControllerIntgTest {
                     var movieInfo = movieInfoEntityExchangeResult.getResponseBody();
                     assertNotNull(movieInfo);
                 });
+    }
+
+    @Test
+    void getMoviesInfoById_stream() {
+
+
+        String movieInfoId = "abc";
+
+        var movieInfo = new MovieInfo(null,"Batman1",2005,List.of("Chris","Michael"), LocalDate.parse("2005-06-15"));
+        webTestClient.post()
+                .uri(MOVIES_INFO_URL)
+                .bodyValue(movieInfo)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .expectBody(MovieInfo.class)
+                .consumeWith(movieInfoEntityExchangeResult -> {
+                    var movieResponse = movieInfoEntityExchangeResult.getResponseBody();
+                    assertNotNull(movieResponse.getMovieInfoId());
+                });
+
+        var movieInfoStream = webTestClient.get()
+                .uri(MOVIES_INFO_URL+"/stream")
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .returnResult(MovieInfo.class)
+                .getResponseBody();
+
+        StepVerifier.create(movieInfoStream)
+                .assertNext( movieInfo1 -> {
+                    assertNotNull(movieInfo1.getMovieInfoId());
+                })
+                .thenCancel()
+                .verify();
     }
 
     @Test

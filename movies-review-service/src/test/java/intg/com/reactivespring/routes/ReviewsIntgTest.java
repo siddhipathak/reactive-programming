@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.test.StepVerifier;
 
 import java.util.List;
 
@@ -91,6 +92,41 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 .is2xxSuccessful()
                 .expectBodyList(Review.class)
                 .hasSize(1);
+
+    }
+
+    @Test
+    void getReview_stream() {
+        //given
+        var review = new Review(null, 1L, "Awesome Movie", 9.0);
+        //when
+        webTestClient
+                .post()
+                .uri(MOVIES_REVIEW_URI)
+                .bodyValue(review)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(Review.class)
+                .consumeWith(reviewResponse -> {
+                    var savedReview = reviewResponse.getResponseBody();
+                    assert savedReview != null;
+                    assertNotNull(savedReview.getReviewId());
+                });
+        //when
+        var reviewStream = webTestClient.get()
+                .uri(MOVIES_REVIEW_URI+"/stream")
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .returnResult(Review.class)
+                        .getResponseBody();
+
+        StepVerifier.create(reviewStream)
+                .assertNext( review1 -> {
+                    assertNotNull(review1.getReviewId());
+                })
+                .thenCancel()
+                .verify();
 
     }
 

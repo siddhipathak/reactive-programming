@@ -4,10 +4,13 @@ import com.reactivespring.domain.MovieInfo;
 import com.reactivespring.service.MoviesInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+
 import javax.validation.Valid;
 
 @RestController
@@ -15,12 +18,15 @@ import javax.validation.Valid;
 public class MoviesInfoController {
 
     @Autowired
-    MoviesInfoService moviesInfoService;
+    private MoviesInfoService moviesInfoService;
+
+    Sinks.Many<MovieInfo> moviesInfoSink = Sinks.many().replay().all();
 
     @PostMapping("/moviesinfo")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<MovieInfo> addMovieInfo(@RequestBody @Valid MovieInfo movieInfo) {
-        return moviesInfoService.addMovieInfo(movieInfo).log();
+        return moviesInfoService.addMovieInfo(movieInfo)
+                .doOnNext(savedMovieInfo -> moviesInfoSink.tryEmitNext(savedMovieInfo));
     }
 
     @GetMapping("/moviesinfo")
@@ -38,6 +44,12 @@ public class MoviesInfoController {
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
                 .log();
+    }
+
+    //creating server sent events using sink
+    @GetMapping(value = "/moviesinfo/stream", produces = MediaType.APPLICATION_NDJSON_VALUE)
+    public Flux<MovieInfo> getMoviesInfoById() {
+        return moviesInfoSink.asFlux();
     }
 
     @PutMapping("/moviesinfo/{id}")
